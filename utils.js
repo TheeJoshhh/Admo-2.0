@@ -34,7 +34,26 @@ module.exports = {
             }  
         });
         return false;
-        
     },
+
+    "log": (client, guild, title, content, fields) => {
+        const Discord = require('discord.js');
+        
+        const guildData = client.getData(client, message)
+        if (!guildData.logs.enabled) return;
+        const channel = message.guild.channels.find(c => c.id === guildData.logs.channel);
+        if (!channel) return client.guildData.set(guild.id, false, "logs.enabled");
+
+        const embed = new Discord.MessageEmbed()
+        .setTitle(title)
+        .setDescription(content)
+        .setColor(guildData.embedColour)
+        fields.forEach(field => { embed.addField(field.title, field.content) });
+        return channel.send(embed);
+    },
+
+    "kick": (client, moderator, member) => {
+
+    }
 
 }
